@@ -1,0 +1,127 @@
+.main-ctn {
+    color: #FFF;
+    display: grid;
+    grid-template-rows: 1fr 1fr 9fr;
+    grid-template-columns: 1fr;
+    overflow-x: hidden;
+
+    .heading-ctn {
+        text-align: center;
+        padding: 0 20px;
+
+        .back-btn {
+            float: left;
+        }
+
+        .heading {
+            color: #FFF;
+            font-size: 23px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 140%;
+        }
+    }
+
+    .footer-menu {
+        border-top: 0.5px solid #313A47;
+        padding: 0 20px;
+        width: 100%;
+        align-self: flex-end;
+
+        .network-fees-ctn {
+            display: flex;
+            padding-top: 12px;
+            justify-content: space-between;
+            align-items: center;
+
+            .network-fees-text {
+                color: #94969C;
+                font-family: Inter, sans-serif;
+                font-size: 10px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 140%;
+            }
+
+            .right-ctn {
+                padding: 4px 8px;
+                gap: 4px;
+                border-radius: 4px;
+                border: 0.5px solid rgba(118, 158, 246, 0.50);
+                background: rgba(19, 87, 239, 0.10);
+
+                .clock-icon {
+                    color: #F5F5F6;
+                    font-size: 10px;
+                    font-weight: 400;
+                    line-height: 140%;
+                }
+
+                .standard-text {
+                    color: #94969C;
+                    font-family: Inter, sans-serif;
+                    font-size: 10px;
+                    font-weight: 400;
+                    line-height: 140%;
+                }
+
+                .eth-text {
+                    color: #CECFD2;
+                    font-family: Inter, sans-serif;
+                    font-size: 10px;
+                    font-weight: 500;
+                    line-height: 140%;
+                }
+
+                .eth-sub-text {
+                    color: #94969C;
+                    font-family: Inter, sans-serif;
+                    font-size: 10px;
+                    font-weight: 400;
+                    line-height: 140%;
+                }
+            }
+        }
+
+        .transfer-fess-ctn {
+            margin-top: 4px;
+            margin-bottom: 12px;
+            height: 25px;
+
+            .transfer-fee-text {
+                color: #94969C;
+                font-family: Inter, sans-serif;
+                font-size: 10px;
+                font-weight: 500;
+                line-height: 140%;
+            }
+
+            .dau-text {
+                color: #CECFD2;
+                font-size: 10px;
+                font-weight: 500;
+                line-height: 140%;
+
+                span {
+                    color: #94969C;
+                    font-size: 10px;
+                    font-weight: 400;
+                    line-height: 140%;
+                }
+            }
+        }
+
+        .next-btn {
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #F10025;
+            padding: 12px 18px;
+            color: #F5F5F6;
+            font-family: Inter, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 140%;
+        }
+    }
+}

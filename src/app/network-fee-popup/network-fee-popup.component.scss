@@ -1,0 +1,125 @@
+.network-fee-container {
+    position: absolute;
+    bottom: 0;
+    border-radius: 20px 20px 0px 0px;
+    background: #1E1E1E;
+    height: 388px;
+
+    .horizontal-bar-ctn {
+        position: relative;
+
+        .horizontal-bar {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 5px;
+            display: inline-block;
+            width: 36px;
+            height: 5px;
+            border-radius: 2.5px;
+            background: var(--Labels-Vibrant-Tertiary---Dark, linear-gradient(0deg, rgba(194, 194, 194, 0.50) 0%, rgba(194, 194, 194, 0.50) 100%), rgba(127, 127, 127, 0.40));
+            background-blend-mode: overlay, luminosity;
+        }
+    }
+
+    .cancel-btn-ctn {
+        position: relative;
+
+        .cancel-btn {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 30px;
+            height: 30px;
+            border-radius: 1000px;
+            background: rgba(127, 127, 127, 0.20);
+            background-blend-mode: overlay, luminosity;
+            color: rgba(127, 127, 127, 0.50);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 590;
+            line-height: 21px;
+        }
+
+    }
+
+    .popup-heading {
+        margin-top: 45px;
+        margin-bottom: 16px;
+        gap: 12px;
+
+        .logo-ctn {
+            width: 47px;
+            height: 47px;
+            padding: 14.688px;
+            border-radius: 145.406px;
+            background: #444;
+            position: relative;
+
+            .token-logo {
+                position: absolute;
+                right: -0.156px;
+                bottom: -2.156px;
+            }
+        }
+    }
+
+    .content {
+        gap: 13px;
+        margin-bottom: 38px;
+
+        p {
+            text-align: center;
+            width: 296px;
+            color: #94969C;
+            font-family: Inter, sans-serif;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 140%;
+        }
+    }
+
+    .btn-container {
+        margin: 0 20px;
+        gap: 12px;
+
+        .got-it-btn {
+            color: #F5F5F6;
+            width: 350px;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 12px;
+            background: #F10025;
+            font-family: Inter, sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 140%;
+        }
+
+        .fee-setting-btn {
+            color: #F5F5F6;
+            background: none;
+            border: none;
+            text-align: center;
+            font-family: Inter, sans-serif;
+            font-size: 10px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 140%;
+            text-decoration-line: underline;
+
+        }
+    }
+}
+
+.active {
+    transform: translateX(0);
+    transition: transform 350ms ease-in;
+}
+
+.inactive {
+    transform: translateX(100%);
+    transition: transform 350ms ease-out;
+}

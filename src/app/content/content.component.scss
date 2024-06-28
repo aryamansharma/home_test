@@ -1,0 +1,110 @@
+.content-container {
+    margin-top: 24px;
+    padding: 0 20px;
+
+    .input-field-ctn {
+        .sub-heading {
+            .left-heading {
+                color: #85888E;
+                font-family: Inter, sans-serif;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 140%;
+            }
+
+            .right-heading {
+                color: #85888E;
+                font-family: Inter, sans-serif;
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 140%;
+            }
+        }
+
+        .content-ctn {
+            border-radius: 12px;
+            background: #262B30;
+            padding: 16px;
+            margin-top: 8px;
+
+            .left-ctn {
+                input {
+                    background: none;
+                    border: none;
+                    height: 42px;
+                    color: #FFF;
+                    font-size: 36px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 140%;
+                    width: 50px;
+                }
+
+                .input-sub-heading {
+                    color: #85888E;
+                    font-family: Inter, sans-serif;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 140%;
+                }
+
+            }
+
+            .right-ctn {
+                gap: 12px;
+
+                .max-text {
+
+                    padding: 2px 4px;
+                    border-radius: 4px;
+                    border: 0.5px solid rgba(118, 158, 246, 0.50);
+                    background: rgba(19, 87, 239, 0.10);
+
+                    color: #769EF6;
+                    font-family: Inter, sans-serif;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 140%;
+                }
+
+                .dropdown {
+                    padding: 6px;
+                    border-radius: 8px;
+                    border: 0.8px solid rgba(49, 58, 71, 0.50);
+                    background: rgba(46, 46, 46, 0.90);
+
+                    .drop-btn {
+                        background: none;
+                        border: none;
+                        color: #FFF;
+                        gap: 4px;
+                        color: #94969C;
+                        font-family: Inter, sans-serif;
+                        font-size: 12px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 140%;
+
+                        .dau-logo-ctn {
+                            padding: 7.5px;
+                            border-radius: 74.25px;
+                            background: var(--Gray-G300, #1E1E1E);
+                        }
+                    }
+                }
+            }
+        }
+
+        .content-ctn:hover {
+            border: 2px solid #1357EF;
+        }
+    }
+
+    .receives-input-field {
+        margin-top: 24px;
+    }
+}

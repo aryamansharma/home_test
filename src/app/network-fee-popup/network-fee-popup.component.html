@@ -1,0 +1,57 @@
+<div class="network-fee-container w-100">
+    <div class="horizontal-bar-ctn">
+        <span (click)="closeNetworkPopup()" class="horizontal-bar">
+        </span>
+    </div>
+    <div class="cancel-btn-ctn">
+        <div (click)="closeNetworkPopup()" class="cancel-btn d-flex align-items-center justify-content-center">X</div>
+    </div>
+    <div class="popup-heading d-flex align-items-center flex-column">
+        <span class="logo-ctn d-flex justify-content-center align-items-center">
+            <span class="red-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="31" height="37" viewBox="0 0 31 37" fill="none">
+                    <g clip-path="url(#clip0_2_2345)">
+                        <path
+                            d="M3.63033 10.0469L15.1405 2.13361L17.1188 6.44993L24.1329 10.0469L27.1903 15.6221L27.55 22.0966L25.212 28.0316L14.601 32.5277L11.9033 31.6285L5.96834 28.0316L2.3714 20.478L3.63033 10.0469Z"
+                            fill="#D9D9D9" />
+                        <path
+                            d="M24.1029 24.3388C22.976 26.0234 21.404 27.3309 19.5565 28.12C18.9195 28.3905 18.2622 28.5975 17.5905 28.7348C16.9188 28.8721 16.2309 28.9397 15.5347 28.9397H8.56704V24.1789H10.6984V26.7838H15.5327C17.1761 26.7838 18.7603 26.2939 20.1179 25.3697C21.4408 24.4638 22.4697 23.2034 23.0883 21.7237C23.5149 20.7052 23.7334 19.6169 23.7334 18.4979C23.7334 16.8379 23.2496 15.2353 22.3329 13.8663C21.4387 12.528 20.1914 11.4889 18.7235 10.8618C17.713 10.4294 16.6392 10.2122 15.5327 10.2122H10.6984V12.8518H8.56704V8.05821H15.5327C17.6048 8.05821 19.6014 8.67714 21.3101 9.84326C22.978 10.9786 24.2723 12.571 25.0522 14.436C25.5912 15.7251 25.8647 17.09 25.8647 18.5C25.8647 20.5925 25.2543 22.6111 24.1009 24.3388H24.1029ZM5.74364 20.7257H14.3547L16.6534 16.2723H5.74568V14.5959H19.3911L15.3632 22.4021H5.74568V20.7257H5.74364ZM3.82054 17.6597H11.9968L12.0009 19.3362H3.82258V17.6597H3.82054ZM15.5 0.875L0.392853 9.6875V27.3125L15.5 36.125L30.6071 27.3125V9.6875L15.5 0.875Z"
+                            fill="#ED1C29" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_2_2345">
+                            <rect width="30.2143" height="35.25" fill="white" transform="translate(0.392853 0.875)" />
+                        </clipPath>
+                    </defs>
+                </svg>
+            </span>
+            <span class="token-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <circle cx="8.07812" cy="8.07812" r="8.07812" fill="#ECEFF0" />
+                    <path d="M8.07707 2.35614L8.00357 2.60646V9.87026L8.07707 9.94378L11.442 7.95073L8.07707 2.35614Z"
+                        fill="#333333" />
+                    <path d="M8.07713 2.35614L4.71225 7.95073L8.07713 9.94381V6.41818V2.35614Z" fill="#8C8C8C" />
+                    <path d="M8.07709 11.0408L8.03568 11.0913V13.6789L8.07709 13.8001L11.444 9.04871L8.07709 11.0408Z"
+                        fill="#333333" />
+                    <path d="M8.07713 13.8001V11.0408L4.71225 9.04871L8.07713 13.8001Z" fill="#8C8C8C" />
+                    <path d="M8.07709 9.94373L11.4419 7.95071L8.07709 6.41815V9.94373Z" fill="#141414" />
+                    <path d="M4.71225 7.95071L8.07708 9.94376V6.41815L4.71225 7.95071Z" fill="#383838" />
+                </svg>
+            </span>
+        </span>
+        <h6 class="network-fee-heading my-0">
+            What is network fee?
+        </h6>
+    </div>
+    <div class="content d-flex align-items-center flex-column">
+        <p class="contetn-1 my-0">This is the estimated fee paid to miners who process your transaction over
+            blockchain.
+        </p>
+        <p class="content-2 my-0">This fee would vary depending on <br> transaction complexity and network traffic.
+        </p>
+    </div>
+    <div class="btn-container d-flex align-items-center flex-column">
+        <button class="got-it-btn w-100">Got it</button>
+        <button class="fee-setting-btn">Fee settings</button>
+    </div>
+</div>
