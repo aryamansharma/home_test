@@ -7,10 +7,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class NetworkpopupComponent {
   @Input() isNetworkPopupOpened!: boolean;
-  @Output() closingPopup = new EventEmitter();
+  @Output() closingPopup = new EventEmitter<string>();
+
+  feeType: string = 'standard';
+
+  changeFeetype(feeType: string) {
+    this.feeType = feeType;
+    this.closeNetworkPopup();
+  }
 
   closeNetworkPopup() {
     this.isNetworkPopupOpened = !this.isNetworkPopupOpened;
-    this.closingPopup.emit();
+    this.closingPopup.emit(this.feeType);
   }
 }

@@ -1,0 +1,71 @@
+.dropdown {
+    padding: 6px;
+    border-radius: 8px;
+    border: 0.8px solid rgba(49, 58, 71, 0.50);
+    background: rgba(46, 46, 46, 0.90);
+
+    mat-form-field {
+        .mdc-text-field--filled {
+            background: none;
+            padding: 0;
+
+            .mat-mdc-form-field-flex {
+                .mat-mdc-form-field-infix {
+                    width: auto;
+                    padding: 0;
+                    min-height: 0;
+                }
+            }
+
+            .mat-mdc-form-field-focus-overlay {
+                background-color: transparent;
+            }
+
+            .mdc-line-ripple::before {
+                display: none;
+            }
+        }
+
+        .mat-mdc-form-field-subscript-wrapper {
+            display: none;
+        }
+
+        .mdc-line-ripple::after {
+            border: none;
+        }
+
+        mat-select {
+
+            .mat-mdc-select-value-text {
+
+                mat-select-trigger {
+
+                    color: #94969C;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 140%;
+                }
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+
+            .mat-mdc-select-arrow-wrapper {
+                margin-left: 4px;
+                height: 12px;
+                width: 12px;
+
+                svg {
+                    fill: #94969C
+                }
+            }
+        }
+    }
+}
+
+.mat-menu-panel {
+    margin-top: 10px;
+}

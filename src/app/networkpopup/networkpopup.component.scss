@@ -40,8 +40,8 @@
         height: 48px;
         padding: 12px;
         border-radius: 8px;
-        border: 2px solid #1357EF;
         background: #262B30;
+        cursor: pointer;
 
         .left-ctn {
             .content-ctn {
@@ -91,6 +91,7 @@
         padding: 12px;
         border-radius: 8px;
         background: #262B30;
+        cursor: pointer;
 
         .left-ctn {
             .content-ctn {
@@ -134,14 +135,16 @@
             }
         }
     }
+
+    .selected {
+        border: 2px solid #1357EF;
+    }
 }
 
 .active {
-    transform: translateX(0);
-    transition: transform 350ms ease-in;
+    display: block;
 }
 
 .inactive {
-    transform: translateX(100%);
-    transition: transform 350ms ease-out;
+    display: none;
 }

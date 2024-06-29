@@ -22,6 +22,94 @@
         }
     }
 
+    .content-container {
+        margin-top: 24px;
+        padding: 0 20px;
+
+        .input-field-ctn {
+            .sub-heading {
+                .left-heading {
+                    color: #85888E;
+                    font-family: Inter, sans-serif;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: 140%;
+                }
+
+                .right-heading {
+                    color: #85888E;
+                    font-family: Inter, sans-serif;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 140%;
+                }
+            }
+
+            .content-ctn {
+                border-radius: 12px;
+                background: #262B30;
+                padding: 16px;
+                margin-top: 8px;
+
+                .left-ctn {
+                    flex-grow: 1;
+
+                    input,
+                    div {
+                        background: none;
+                        border: none;
+                        height: 42px;
+                        color: #FFF;
+                        font-size: 36px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 140%;
+                        width: 100%;
+                    }
+
+                    .input-sub-heading {
+                        color: #85888E;
+                        font-family: Inter, sans-serif;
+                        font-size: 12px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 140%;
+                    }
+
+                }
+
+                .right-ctn {
+                    gap: 12px;
+
+                    .max-text {
+
+                        padding: 2px 4px;
+                        border-radius: 4px;
+                        border: 0.5px solid rgba(118, 158, 246, 0.50);
+                        background: rgba(19, 87, 239, 0.10);
+
+                        color: #769EF6;
+                        font-family: Inter, sans-serif;
+                        font-size: 12px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 140%;
+                    }
+                }
+            }
+
+            .content-ctn:hover {
+                border: 2px solid #1357EF;
+            }
+        }
+
+        .receives-input-field {
+            margin-top: 24px;
+        }
+    }
+
     .footer-menu {
         border-top: 0.5px solid #313A47;
         padding: 0 20px;
@@ -49,6 +137,7 @@
                 border-radius: 4px;
                 border: 0.5px solid rgba(118, 158, 246, 0.50);
                 background: rgba(19, 87, 239, 0.10);
+                cursor: pointer;
 
                 .clock-icon {
                     color: #F5F5F6;

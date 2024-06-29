@@ -1,4 +1,5 @@
-<div class="network-fee-container w-100">
+<div class="network-fee-container w-100"
+    [ngClass]="{'active' : isNetworkFeePopupOpened , 'inactive' : !isNetworkFeePopupOpened}">
     <div class="horizontal-bar-ctn">
         <span (click)="closeNetworkPopup()" class="horizontal-bar">
         </span>
@@ -51,7 +52,7 @@
         </p>
     </div>
     <div class="btn-container d-flex align-items-center flex-column">
-        <button class="got-it-btn w-100">Got it</button>
+        <button class="got-it-btn w-100" (click)="closeNetworkPopup()">Got it</button>
         <button class="fee-setting-btn">Fee settings</button>
     </div>
 </div>

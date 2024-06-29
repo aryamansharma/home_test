@@ -1,0 +1,15 @@
+<div class="dropdown">
+    <mat-form-field appearance="fill">
+        <mat-select (selectionChange)="onSelectionChange($event)" [(value)]="selectedOption">
+            <mat-select-trigger>
+                <img *ngIf="selectedOption" [src]="getIcon(selectedOption)" alt="{{ selectedOption }}"
+                    class="custom-icon">
+                {{ selectedOption }}
+            </mat-select-trigger>
+            <mat-option *ngFor="let option of options" [value]="option.value">
+                <img src="{{ option.icon }}" alt="{{ option.value }}" class="custom-icon">
+                {{ option.value }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
