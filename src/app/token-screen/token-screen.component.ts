@@ -9,42 +9,41 @@ export class TokenScreenComponent implements OnInit {
   isNetworkComponentOpened: boolean = false;
   isNetworkFeeComponentOpened: boolean = false;
   feeType: string = 'standard';
-  amountBeforeDeduction!: number;
+  amountBeforeDeduction!: number | undefined;
   amountAfterDeduction!: number;
+  sendCurrencyType: string = 'DAU';
+  recieveCurrenyType: string = 'DAU';
   balance = {
     valueInDau: 7,
   };
 
   constructor() {}
 
-  ngOnInit(): void {
-    console.log(this.feeType);
-  }
+  ngOnInit(): void {}
 
   toggleNetworkPopup(event: any) {
     this.isNetworkComponentOpened = !this.isNetworkComponentOpened;
     this.feeType = event;
-    console.log(this.feeType);
   }
 
   toggleNetworkFeePopup() {
     this.isNetworkFeeComponentOpened = !this.isNetworkFeeComponentOpened;
   }
 
-  convertingCurrency() {}
-
-  sendCurrencyType!: string;
-  recieveCurrenyType!: string;
-
-  convertingIntoUSD(balance: number) {
-    return balance * 2474.8;
+  convertingIntoUSD() {
+    if (this.amountBeforeDeduction) {
+      return this.amountBeforeDeduction * 2474.8;
+    } else return;
   }
 
-  convertingIntoDAU(balance: number) {
-    return balance / 2474.8;
+  convertingIntoDAU() {
+    if (this.amountBeforeDeduction) {
+      return this.amountBeforeDeduction / 2474.8;
+    } else return;
   }
   gettingSendCurrencyType(event: string) {
     this.sendCurrencyType = event;
+    this.amountBeforeDeduction = undefined;
   }
   gettingRecieveCurrencyType(event: string) {
     this.recieveCurrenyType = event;

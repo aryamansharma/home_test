@@ -22,9 +22,7 @@ export class DropdowncomponentComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.sendingDropDownVal.emit(this.selectedOption);
-  }
+  ngOnInit(): void {}
 
   getIcon(value: string): string {
     const option = this.options.find((option) => option.value === value);
