@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './token-screen.component.html',
   styleUrls: ['./token-screen.component.scss'],
 })
-export class TokenScreenComponent implements OnInit {
+export class TokenScreenComponent {
   isNetworkComponentOpened: boolean = false;
   isNetworkFeeComponentOpened: boolean = false;
   feeType: string = 'standard';
@@ -20,10 +20,6 @@ export class TokenScreenComponent implements OnInit {
   };
 
   constructor(private toastr: ToastrService) {}
-
-  ngOnInit(): void {
-    console.log('9913000000000003'.length);
-  }
 
   toggleNetworkPopup(event: any) {
     this.isNetworkComponentOpened = !this.isNetworkComponentOpened;

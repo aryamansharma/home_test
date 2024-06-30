@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
-  OnInit,
   Output,
   ViewChild,
   ViewEncapsulation,
@@ -16,7 +14,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
   styleUrl: './dropdowncomponent.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class DropdowncomponentComponent implements OnInit, AfterViewInit {
+export class DropdowncomponentComponent {
   @Output() sendingDropDownVal = new EventEmitter<string>();
   @ViewChild('select') select!: MatSelect;
 
@@ -27,10 +25,6 @@ export class DropdowncomponentComponent implements OnInit, AfterViewInit {
   selectedOption = this.options[0].value;
 
   constructor(private overlay: Overlay) {}
-
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {}
 
   getIcon(value: string): string {
     const option = this.options.find((option) => option.value === value);
