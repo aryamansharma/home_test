@@ -33,6 +33,8 @@ $testapp-theme: mat.define-light-theme((color: (primary: $testapp-primary,
 
 /* You can add global styles to this file, and also import other style files */
 
+@import 'ngx-toastr/toastr';
+
 html,
 body {
   margin: 0;
@@ -42,6 +44,11 @@ body {
   font-family: Inter, sans-serif;
   height: 100%;
 
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
   #cdk-overlay-0,
   #cdk-overlay-1 {

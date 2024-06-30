@@ -1,6 +1,7 @@
 <div class="dropdown">
     <mat-form-field appearance="fill">
-        <mat-select (selectionChange)="onSelectionChange($event)" [(value)]="selectedOption">
+        <mat-select #select (selectionChange)="onSelectionChange($event)" [(value)]="selectedOption"
+            panelClass="custom-overlay-panel">
             <mat-select-trigger>
                 <img *ngIf="selectedOption" [src]="getIcon(selectedOption)" alt="{{ selectedOption }}"
                     class="custom-icon">

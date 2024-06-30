@@ -7,8 +7,18 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
+import {
+  MatSelectModule,
+  MAT_SELECT_CONFIG,
+  MatSelectConfig,
+} from '@angular/material/select';
 import { DropdowncomponentComponent } from './dropdowncomponent/dropdowncomponent.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { OverlayModule } from '@angular/cdk/overlay';
+
+const customMatSelectConfig: MatSelectConfig = {
+  overlayPanelClass: 'custom-overlay-panel',
+};
 
 @NgModule({
   declarations: [
@@ -30,6 +40,9 @@ import { DropdowncomponentComponent } from './dropdowncomponent/dropdowncomponen
     BrowserModule,
     CommonModule,
     MatSelectModule,
+    MatFormFieldModule,
+    OverlayModule,
   ],
+  providers: [{ provide: MAT_SELECT_CONFIG, useValue: customMatSelectConfig }],
 })
 export class SharedModule {}
