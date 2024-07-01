@@ -109,6 +109,7 @@
 
             .content-ctn:hover {
                 border: 2px solid #1357EF;
+                padding: 14px;
             }
         }
 
@@ -214,4 +215,8 @@
             line-height: 140%;
         }
     }
+}
+
+.blur {
+    filter: blur(2px);
 }

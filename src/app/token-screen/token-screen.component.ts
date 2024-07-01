@@ -23,11 +23,13 @@ export class TokenScreenComponent {
 
   toggleNetworkPopup(event: any) {
     this.isNetworkComponentOpened = !this.isNetworkComponentOpened;
+    console.log(this.isNetworkComponentOpened);
     this.feeType = event;
   }
 
   toggleNetworkFeePopup() {
     this.isNetworkFeeComponentOpened = !this.isNetworkFeeComponentOpened;
+    console.log(this.isNetworkFeeComponentOpened);
   }
 
   convertingIntoUSD(amount: any) {
