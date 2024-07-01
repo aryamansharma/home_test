@@ -31,8 +31,8 @@
         <div class=" send-input-field-ctn input-field-ctn">
             <div class="send-sub-heading sub-heading d-flex justify-content-between align-items-center">
                 <div class="left-heading">You are sending</div>
-                <div class="right-heading">Balance: {{sendCurrencyTypePrimary ==='DAU' ? balance :
-                    convertingIntoUSD(balance) }} {{sendCurrencyTypePrimary}}</div>
+                <div class="right-heading">Balance: {{sendCurrencyTypePrimary ==='DAU' ? balanceInDAU :
+                    balanceInUSD }} {{sendCurrencyTypePrimary}}</div>
             </div>
             <div class="content-ctn d-flex justify-content-between align-items-center">
                 <div class="left-ctn">
@@ -43,7 +43,9 @@
                         {{sendCurrencyTypeSecondary}}</p>
                 </div>
                 <div class="right-ctn d-flex justify-content-between align-items-center">
-                    <p class="max-text my-0">Max</p>
+                    <p class="max-text my-0 " [ngClass]="{'show-max-icon': (sendCurrencyTypePrimary==='DAU' && (amountBeforeDeduction! >= this.balanceInDAU!)
+                        || (sendCurrencyTypePrimary==='USD' && (amountBeforeDeduction! >= this.balanceInUSD!)))}">
+                        Max</p>
                     <app-dropdowncomponent
                         (sendingDropDownVal)="gettingSendCurrencyType($event)"></app-dropdowncomponent>
                 </div>
