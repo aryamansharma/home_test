@@ -98,6 +98,24 @@ export class TokenScreenComponent implements OnInit {
     return decimalPart.length > 18;
   }
 
+  checkingForDecimalPlaces(): boolean {
+    let amount = this.amountAfterDeduction;
+    if (this.sendCurrencyTypePrimary === 'USD') {
+      amount = amount! / 2474.8;
+      return (
+        this.hasUpTo18DecimalPlaces(amount) ||
+        this.hasUpTo18DecimalPlaces(this.amountAfterDeduction!)
+      );
+    } else if (this.sendCurrencyTypePrimary === 'DAU') {
+      amount = amount! * 2474.8;
+      return (
+        this.hasUpTo18DecimalPlaces(amount) ||
+        this.hasUpTo18DecimalPlaces(this.amountAfterDeduction!)
+      );
+    }
+    return false;
+  }
+
   validatingTokens() {
     if (!this.amountBeforeDeduction!) {
       this.toastr.error('Please enter some amount', 'Major Error', {
@@ -120,10 +138,7 @@ export class TokenScreenComponent implements OnInit {
           timeOut: 3000,
         }
       );
-    } else if (
-      this.hasUpTo18DecimalPlaces(this.amountAfterDeduction!) ||
-      this.hasUpTo18DecimalPlaces(this.amountAfterDeduction! * 2474.8)
-    ) {
+    } else if (this.checkingForDecimalPlaces()) {
       this.toastr.error(
         'Cannot accept more than 18 decimal places. Please enter less amount',
         'Major Error',
