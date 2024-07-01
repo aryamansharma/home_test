@@ -72,6 +72,10 @@
                         width: 100%;
                     }
 
+                    input:focus {
+                        outline: none;
+                    }
+
                     .input-sub-heading {
                         color: #85888E;
                         font-size: 12px;
