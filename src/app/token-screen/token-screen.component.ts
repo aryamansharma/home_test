@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { convertDauToUsd } from './utility';
+import { convertUsdToDau } from './utility';
 
 @Component({
   selector: 'app-token-screen',
@@ -9,21 +11,23 @@ import { ToastrService } from 'ngx-toastr';
 export class TokenScreenComponent implements OnInit {
   isNetworkComponentOpened: boolean = false;
   isNetworkFeeComponentOpened: boolean = false;
+
   feeType: string = 'standard';
-  amountBeforeDeduction!: number | undefined;
-  amountAfterDeduction!: number | undefined;
+
+  amountBeforeDeduction: number | string = '';
+  amountAfterDeduction: number | string = '';
   sendCurrencyTypePrimary: string = 'DAU';
   sendCurrencyTypeSecondary: string = 'USD';
   recieveCurrenyTypePrimary: string = 'DAU';
   recieveCurrenyTypeSecondary: string = 'USD';
 
-  balanceInDAU: number | undefined = 7;
-  balanceInUSD!: number | undefined;
+  balanceInDAU: number | string = 7;
+  balanceInUSD!: number | string;
 
   constructor(private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    this.balanceInUSD = this.convertingIntoUSD(this.balanceInDAU);
+    this.balanceInUSD = convertDauToUsd(this.balanceInDAU);
   }
 
   toggleNetworkPopup(event: any) {
@@ -35,21 +39,11 @@ export class TokenScreenComponent implements OnInit {
     this.isNetworkFeeComponentOpened = !this.isNetworkFeeComponentOpened;
   }
 
-  convertingIntoUSD(amount: any) {
-    if (amount) return amount * 2474.8;
-    else return;
-  }
-
-  convertingIntoDAU(amount: any) {
-    if (amount) return amount / 2474.8;
-    else return;
-  }
-
   gettingSendCurrencyType(event: string) {
     this.sendCurrencyTypeSecondary = this.sendCurrencyTypePrimary;
     this.sendCurrencyTypePrimary = event;
-    this.amountBeforeDeduction = undefined;
-    this.amountAfterDeduction = undefined;
+    this.amountBeforeDeduction = 0;
+    this.amountAfterDeduction = 0;
   }
 
   gettingRecieveCurrencyType(event: string) {
@@ -59,24 +53,24 @@ export class TokenScreenComponent implements OnInit {
 
   calculatingAmountToRecieve() {
     this.amountAfterDeduction = this.amountBeforeDeduction;
-    let standardAmount: number | undefined = 0.0037;
-    let fastAmount: number | undefined = 0.0076;
-    let transferFees: number | undefined = 0.005;
+    let standardAmount: number | string = 0.0037;
+    let fastAmount: number | string = 0.0076;
+    let transferFees: number | string = 0.005;
     if (this.sendCurrencyTypePrimary === 'USD') {
       if (this.recieveCurrenyTypePrimary === 'USD') {
-        standardAmount = this.convertingIntoUSD(standardAmount);
-        fastAmount = this.convertingIntoUSD(fastAmount);
-        transferFees = this.convertingIntoUSD(transferFees);
+        standardAmount = convertDauToUsd(standardAmount);
+        fastAmount = convertDauToUsd(fastAmount);
+        transferFees = convertDauToUsd(transferFees);
       }
     }
     if (this.amountAfterDeduction) {
       this.amountAfterDeduction =
         this.feeType === 'standard'
-          ? this.amountAfterDeduction - standardAmount!
+          ? this.amountAfterDeduction - standardAmount
           : this.amountAfterDeduction - fastAmount!;
       this.amountAfterDeduction = this.amountAfterDeduction - transferFees!;
     } else {
-      this.amountAfterDeduction = undefined;
+      this.amountAfterDeduction = 0;
     }
   }
 
@@ -84,36 +78,10 @@ export class TokenScreenComponent implements OnInit {
     if (type === this.sendCurrencyTypePrimary) {
       return amount;
     } else if (type === 'DAU') {
-      return this.convertingIntoDAU(amount);
+      return convertUsdToDau(amount);
     } else {
-      return this.convertingIntoUSD(amount);
+      return convertDauToUsd(amount);
     }
-  }
-
-  hasUpTo18DecimalPlaces(num: number): boolean {
-    const numStr = num.toString();
-    const parts = numStr.split('.');
-    if (parts.length < 2) return true;
-    const decimalPart = parts[1];
-    return decimalPart.length > 18;
-  }
-
-  checkingForDecimalPlaces(): boolean {
-    let amount = this.amountAfterDeduction;
-    if (this.sendCurrencyTypePrimary === 'USD') {
-      amount = amount! / 2474.8;
-      return (
-        this.hasUpTo18DecimalPlaces(amount) ||
-        this.hasUpTo18DecimalPlaces(this.amountAfterDeduction!)
-      );
-    } else if (this.sendCurrencyTypePrimary === 'DAU') {
-      amount = amount! * 2474.8;
-      return (
-        this.hasUpTo18DecimalPlaces(amount) ||
-        this.hasUpTo18DecimalPlaces(this.amountAfterDeduction!)
-      );
-    }
-    return false;
   }
 
   validatingTokens() {
@@ -121,7 +89,7 @@ export class TokenScreenComponent implements OnInit {
       this.toastr.error('Please enter some amount', 'Major Error', {
         timeOut: 3000,
       });
-    } else if (this.amountBeforeDeduction <= 0) {
+    } else if (Number(this.amountBeforeDeduction) <= 0) {
       this.toastr.error('Token can not be negative or zero', 'Major Error', {
         timeOut: 3000,
       });
@@ -133,14 +101,6 @@ export class TokenScreenComponent implements OnInit {
     ) {
       this.toastr.error(
         'Amount should be less than current balance',
-        'Major Error',
-        {
-          timeOut: 3000,
-        }
-      );
-    } else if (this.checkingForDecimalPlaces()) {
-      this.toastr.error(
-        'Cannot accept more than 18 decimal places. Please enter less amount',
         'Major Error',
         {
           timeOut: 3000,
@@ -161,8 +121,8 @@ export class TokenScreenComponent implements OnInit {
             : this.convertingIntoDAU(this.balanceInUSD);
       }
       this.toastr.success('Tokens send successfully!', 'Success');
-      this.amountBeforeDeduction = undefined;
-      this.amountAfterDeduction = undefined;
+      this.amountBeforeDeduction = 0;
+      this.amountAfterDeduction = 0;
     }
   }
 }
