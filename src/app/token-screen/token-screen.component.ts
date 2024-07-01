@@ -23,13 +23,11 @@ export class TokenScreenComponent {
 
   toggleNetworkPopup(event: any) {
     this.isNetworkComponentOpened = !this.isNetworkComponentOpened;
-    console.log(this.isNetworkComponentOpened);
     this.feeType = event;
   }
 
   toggleNetworkFeePopup() {
     this.isNetworkFeeComponentOpened = !this.isNetworkFeeComponentOpened;
-    console.log(this.isNetworkFeeComponentOpened);
   }
 
   convertingIntoUSD(amount: any) {
@@ -95,7 +93,11 @@ export class TokenScreenComponent {
   }
 
   validatingTokens() {
-    if (
+    if (!this.amountBeforeDeduction!) {
+      this.toastr.error('Please enter some amount', 'Major Error', {
+        timeOut: 3000,
+      });
+    } else if (
       this.hasUpTo18DecimalPlaces(this.amountAfterDeduction!) ||
       this.hasUpTo18DecimalPlaces(this.amountAfterDeduction! * 2474.8)
     ) {

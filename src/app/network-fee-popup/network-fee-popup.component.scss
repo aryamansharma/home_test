@@ -9,6 +9,7 @@
         position: relative;
 
         .horizontal-bar {
+            cursor: pointer;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -17,7 +18,7 @@
             width: 36px;
             height: 5px;
             border-radius: 2.5px;
-            background: var(--Labels-Vibrant-Tertiary---Dark, linear-gradient(0deg, rgba(194, 194, 194, 0.50) 0%, rgba(194, 194, 194, 0.50) 100%), rgba(127, 127, 127, 0.40));
+            background: linear-gradient(0deg, rgba(194, 194, 194, 0.50) 0%, rgba(194, 194, 194, 0.50) 100%), rgba(127, 127, 127, 0.40);
             background-blend-mode: overlay, luminosity;
         }
     }
@@ -26,6 +27,7 @@
         position: relative;
 
         .cancel-btn {
+            cursor: pointer;
             position: absolute;
             top: 24px;
             right: 24px;
@@ -33,12 +35,7 @@
             height: 30px;
             border-radius: 1000px;
             background: rgba(127, 127, 127, 0.20);
-            background-blend-mode: overlay, luminosity;
             color: rgba(127, 127, 127, 0.50);
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 590;
-            line-height: 21px;
         }
 
     }
@@ -72,9 +69,7 @@
             text-align: center;
             width: 296px;
             color: #94969C;
-            font-family: Inter, sans-serif;
             font-size: 14px;
-            font-style: normal;
             font-weight: 400;
             line-height: 140%;
         }
@@ -91,9 +86,7 @@
             border: none;
             border-radius: 12px;
             background: #F10025;
-            font-family: Inter, sans-serif;
             font-size: 16px;
-            font-style: normal;
             font-weight: 600;
             line-height: 140%;
         }
@@ -103,9 +96,7 @@
             background: none;
             border: none;
             text-align: center;
-            font-family: Inter, sans-serif;
             font-size: 10px;
-            font-style: normal;
             font-weight: 600;
             line-height: 140%;
             text-decoration-line: underline;

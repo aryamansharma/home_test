@@ -11,6 +11,7 @@
         position: relative;
 
         .horizontal-bar {
+            cursor: pointer;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -19,16 +20,14 @@
             width: 36px;
             height: 5px;
             border-radius: 2.5px;
-            background: var(--Labels-Vibrant-Tertiary---Dark, linear-gradient(0deg, rgba(194, 194, 194, 0.50) 0%, rgba(194, 194, 194, 0.50) 100%), rgba(127, 127, 127, 0.40));
+            background: linear-gradient(0deg, rgba(194, 194, 194, 0.50) 0%, rgba(194, 194, 194, 0.50) 100%), rgba(127, 127, 127, 0.40);
             background-blend-mode: overlay, luminosity;
         }
     }
 
     .network-fee-heading {
         color: #FFF;
-        font-family: Inter, sans-serif;
         font-size: 18px;
-        font-style: normal;
         font-weight: 600;
         line-height: 140%;
         margin-top: 28px;
@@ -47,18 +46,14 @@
             .content-ctn {
                 .standard-text {
                     color: #F5F5F6;
-                    font-family: Inter, sans-serif;
                     font-size: 14px;
-                    font-style: normal;
                     font-weight: 500;
                     line-height: 140%;
                 }
 
                 .thirty-seconds-text {
                     color: #1CDB82;
-                    font-family: Inter, sans-serif;
                     font-size: 10px;
-                    font-style: normal;
                     font-weight: 400;
                     line-height: 140%;
                 }
@@ -69,17 +64,13 @@
 
         .right-ctn {
             color: #F5F5F6;
-            font-family: Inter, sans-serif;
             font-size: 12px;
-            font-style: normal;
             font-weight: 500;
             line-height: 140%;
 
             span {
                 color: #94969C;
-                font-family: Inter, sans-serif;
                 font-size: 10px;
-                font-style: normal;
                 font-weight: 400;
                 line-height: 140%;
             }
@@ -97,18 +88,14 @@
             .content-ctn {
                 .fast-text {
                     color: #F5F5F6;
-                    font-family: Inter, sans-serif;
                     font-size: 14px;
-                    font-style: normal;
                     font-weight: 500;
                     line-height: 140%;
                 }
 
                 .ten-seconds-text {
                     color: #1CDB82;
-                    font-family: Inter, sans-serif;
                     font-size: 10px;
-                    font-style: normal;
                     font-weight: 400;
                     line-height: 140%;
                 }
@@ -119,17 +106,13 @@
 
         .right-ctn {
             color: #F5F5F6;
-            font-family: Inter, sans-serif;
             font-size: 12px;
-            font-style: normal;
             font-weight: 500;
             line-height: 140%;
 
             span {
                 color: #94969C;
-                font-family: Inter, sans-serif;
                 font-size: 10px;
-                font-style: normal;
                 font-weight: 400;
                 line-height: 140%;
             }
