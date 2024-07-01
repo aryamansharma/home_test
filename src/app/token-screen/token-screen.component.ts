@@ -12,12 +12,12 @@ export class TokenScreenComponent {
   feeType: string = 'standard';
   amountBeforeDeduction!: number | undefined;
   amountAfterDeduction!: number | undefined;
-  sendCurrencyType: string = 'DAU';
-  recieveCurrenyType: string = 'DAU';
-  isBtnDisabled: boolean = true;
-  balance = {
-    valueInDau: 7,
-  };
+  sendCurrencyTypePrimary: string = 'DAU';
+  sendCurrencyTypeSecondary: string = 'USD';
+  recieveCurrenyTypePrimary: string = 'DAU';
+  recieveCurrenyTypeSecondary: string = 'USD';
+
+  balance: number = 7;
 
   constructor(private toastr: ToastrService) {}
 
@@ -40,25 +40,47 @@ export class TokenScreenComponent {
     else return;
   }
   gettingSendCurrencyType(event: string) {
-    this.sendCurrencyType = event;
+    this.sendCurrencyTypeSecondary = this.sendCurrencyTypePrimary;
+    this.sendCurrencyTypePrimary = event;
     this.amountBeforeDeduction = undefined;
     this.amountAfterDeduction = undefined;
   }
   gettingRecieveCurrencyType(event: string) {
-    this.recieveCurrenyType = event;
+    this.recieveCurrenyTypeSecondary = this.recieveCurrenyTypePrimary;
+    this.recieveCurrenyTypePrimary = event;
   }
 
   calculatingAmountToRecieve() {
     this.amountAfterDeduction = this.amountBeforeDeduction;
-    if (this.amountBeforeDeduction) {
+    const standardAmount =
+      this.sendCurrencyTypePrimary === 'DAU'
+        ? 0.0037
+        : this.convertingIntoUSD(0.0037);
+    const fastAmount =
+      this.sendCurrencyTypePrimary === 'DAU'
+        ? 0.0076
+        : this.convertingIntoUSD(0.0076);
+    const transferFees =
+      this.sendCurrencyTypePrimary === 'DAU'
+        ? 0.005
+        : this.convertingIntoUSD(0.005);
+
+    if (this.amountAfterDeduction) {
       this.amountAfterDeduction =
         this.feeType === 'standard'
-          ? this.amountAfterDeduction! - 0.0037
-          : this.amountAfterDeduction! - 0.0076;
-      this.amountAfterDeduction = this.amountAfterDeduction - 0.005;
-      this.isBtnDisabled = false;
+          ? this.amountAfterDeduction! - standardAmount!
+          : this.amountAfterDeduction! - fastAmount!;
+      this.amountAfterDeduction = this.amountAfterDeduction - transferFees!;
     } else {
       this.amountAfterDeduction = undefined;
+    }
+  }
+
+  convertingCurrency(amount: any, type: string) {
+    if (type === this.sendCurrencyTypePrimary) return amount;
+    else {
+      if (type === 'DAU') return this.convertingIntoDAU(amount);
+      else return this.convertingIntoUSD(amount);
     }
   }
 
@@ -67,12 +89,12 @@ export class TokenScreenComponent {
     const parts = numStr.split('.');
     if (parts.length < 2) return true;
     const decimalPart = parts[1];
-    return decimalPart.length <= 18;
+    return decimalPart.length > 18;
   }
 
   validatingTokens() {
     if (
-      !this.hasUpTo18DecimalPlaces(this.amountAfterDeduction!) ||
+      this.hasUpTo18DecimalPlaces(this.amountAfterDeduction!) ||
       this.hasUpTo18DecimalPlaces(this.amountAfterDeduction! * 2474.8)
     ) {
       this.toastr.error(
@@ -82,7 +104,7 @@ export class TokenScreenComponent {
           timeOut: 3000,
         }
       );
-    } else if (this.amountBeforeDeduction! > this.balance.valueInDau) {
+    } else if (this.amountBeforeDeduction! > this.balance) {
       this.toastr.error(
         'Amount should be less than current balance',
         'Major Error',
@@ -95,7 +117,8 @@ export class TokenScreenComponent {
         timeOut: 3000,
       });
     } else {
-      this.toastr.success('Hello world!', 'Toastr fun!');
+      this.balance = this.balance - this.amountBeforeDeduction!;
+      this.toastr.success('Tokens send successfully!', 'Success');
       this.amountBeforeDeduction = undefined;
       this.amountAfterDeduction = undefined;
     }
