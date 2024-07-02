@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { convertDauToUsd } from './utility';
-import { convertUsdToDau } from './utility';
+import { convertDauToUsd, convertUsdToDau } from './utility';
 
 @Component({
   selector: 'app-token-screen',
@@ -53,22 +52,24 @@ export class TokenScreenComponent implements OnInit {
 
   calculatingAmountToRecieve() {
     this.amountAfterDeduction = this.amountBeforeDeduction;
-    let standardAmount: number | string = 0.0037;
-    let fastAmount: number | string = 0.0076;
+    let standardAmount: number | string = 3.76;
+    let fastAmount: number | string = 10.3;
     let transferFees: number | string = 0.005;
     if (this.sendCurrencyTypePrimary === 'USD') {
-      if (this.recieveCurrenyTypePrimary === 'USD') {
-        standardAmount = convertDauToUsd(standardAmount);
-        fastAmount = convertDauToUsd(fastAmount);
+      if (this.recieveCurrenyTypePrimary === 'DAU') {
+        standardAmount = convertUsdToDau(standardAmount);
+        fastAmount = convertUsdToDau(fastAmount);
+      } else if (this.recieveCurrenyTypePrimary === 'USD') {
         transferFees = convertDauToUsd(transferFees);
       }
     }
     if (this.amountAfterDeduction) {
       this.amountAfterDeduction =
         this.feeType === 'standard'
-          ? this.amountAfterDeduction - standardAmount
-          : this.amountAfterDeduction - fastAmount!;
-      this.amountAfterDeduction = this.amountAfterDeduction - transferFees!;
+          ? Number(this.amountAfterDeduction) - Number(standardAmount)
+          : Number(this.amountAfterDeduction) - Number(fastAmount);
+      this.amountAfterDeduction =
+        this.amountAfterDeduction - Number(transferFees);
     } else {
       this.amountAfterDeduction = 0;
     }
@@ -95,9 +96,9 @@ export class TokenScreenComponent implements OnInit {
       });
     } else if (
       (this.sendCurrencyTypePrimary === 'DAU' &&
-        this.amountBeforeDeduction > this.balanceInDAU!) ||
+        this.amountBeforeDeduction > this.balanceInDAU) ||
       (this.sendCurrencyTypePrimary === 'USD' &&
-        this.amountBeforeDeduction > this.balanceInUSD!)
+        this.amountBeforeDeduction > this.balanceInUSD)
     ) {
       this.toastr.error(
         'Amount should be less than current balance',
@@ -108,17 +109,19 @@ export class TokenScreenComponent implements OnInit {
       );
     } else {
       if (this.sendCurrencyTypePrimary === 'DAU') {
-        this.balanceInDAU = this.balanceInDAU! - this.amountBeforeDeduction;
-        this.balanceInUSD =
-          this.convertingIntoUSD(this.balanceInDAU) === undefined
-            ? 0
-            : this.convertingIntoUSD(this.balanceInDAU);
-      } else if (this.sendCurrencyTypePrimary === 'USD') {
-        this.balanceInUSD = this.balanceInUSD! - this.amountBeforeDeduction;
         this.balanceInDAU =
-          this.convertingIntoDAU(this.balanceInUSD) === undefined
+          Number(this.balanceInDAU) - Number(this.amountBeforeDeduction);
+        this.balanceInUSD =
+          convertDauToUsd(this.balanceInDAU) === undefined
             ? 0
-            : this.convertingIntoDAU(this.balanceInUSD);
+            : convertDauToUsd(this.balanceInDAU);
+      } else if (this.sendCurrencyTypePrimary === 'USD') {
+        this.balanceInUSD =
+          Number(this.balanceInUSD) - Number(this.amountBeforeDeduction);
+        this.balanceInDAU =
+          convertUsdToDau(this.balanceInUSD) === undefined
+            ? 0
+            : convertUsdToDau(this.balanceInUSD);
       }
       this.toastr.success('Tokens send successfully!', 'Success');
       this.amountBeforeDeduction = 0;
