@@ -38,17 +38,17 @@ export class TokenScreenComponent implements OnInit {
    *
    * @param {string | number | BigNumber} usdAmount - The amount of USD to convert.
    * @param {BigNumber} usdToDauRate - The exchange rate from USD to DAU.
-   * @returns {string} - The equivalent amount in DAU, rounded to 18 decimal places.
+   * @returns {BigNumber} - The equivalent amount in DAU, rounded to 18 decimal places.
    */
   convertUsdToDau(
     usdAmount: string | number | BigNumber,
     usdToDauRate: BigNumber = USD_TO_DAU_RATE
-  ): string {
+  ): BigNumber {
     if (usdAmount) {
       const usd = new BigNumber(usdAmount);
-      const dauAmount = usd.times(usdToDauRate).toFixed(18); // Return the result with up to 18 decimal places
+      const dauAmount = usd.times(usdToDauRate); // .toFixed(18); Return the result with up to 18 decimal places
       return dauAmount;
-    } else return '';
+    } else return new BigNumber(0);
   }
 
   /**
@@ -61,12 +61,12 @@ export class TokenScreenComponent implements OnInit {
   convertDauToUsd(
     dauAmount: string | number | BigNumber,
     dauToUsdRate: BigNumber = DAU_TO_USD_RATE
-  ): string {
+  ): BigNumber {
     if (dauAmount) {
       const dau = new BigNumber(dauAmount);
-      const usdAmount = dau.times(dauToUsdRate).toFixed(2); // Return the result with up to 2 decimal places
+      const usdAmount = dau.times(dauToUsdRate); // .toFixed(2); Return the result with up to 2 decimal places
       return usdAmount;
-    } else return '';
+    } else return new BigNumber(0);
   }
 
   toggleNetworkPopup(event: any) {
@@ -103,11 +103,10 @@ export class TokenScreenComponent implements OnInit {
       transferFees = new BigNumber(this.convertDauToUsd(fastAmount));
     }
     if (this.amountAfterDeduction) {
-      totalFees = new BigNumber(transferFees).add(
-        this.feeType === 'standard'
-          ? new BigNumber(standardAmount)
-          : new BigNumber(fastAmount)
+      totalFees = transferFees.add(
+        this.feeType === 'standard' ? standardAmount : fastAmount
       );
+      console.log(totalFees);
       this.amountAfterDeduction = new BigNumber(
         this.amountAfterDeduction
       ).minus(totalFees);
