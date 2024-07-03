@@ -17,7 +17,7 @@ export class TokenScreenComponent implements OnInit {
 
   feeType: string = 'standard';
 
-  amountBeforeDeduction: BigNumber = new BigNumber(0);
+  amountBeforeDeduction: any = null;
   amountAfterDeduction: BigNumber = new BigNumber(0);
   sendCurrencyTypePrimary: string = 'DAU';
   sendCurrencyTypeSecondary: string = 'USD';
@@ -26,6 +26,8 @@ export class TokenScreenComponent implements OnInit {
 
   balanceInDAU: BigNumber = new BigNumber('7');
   balanceInUSD!: BigNumber;
+
+  isAmountValid: boolean = false;
 
   constructor(private toastr: ToastrService) {}
 
@@ -90,60 +92,71 @@ export class TokenScreenComponent implements OnInit {
     this.recieveCurrenyTypePrimary = event;
   }
 
-  calculatingAmountToRecieve() {
-    this.amountAfterDeduction = this.amountBeforeDeduction;
-    let standardAmount: BigNumber = new BigNumber(3.76);
-    let fastAmount: BigNumber = new BigNumber(10.3);
-    let transferFees: BigNumber = new BigNumber(0.005);
-    let totalFees: BigNumber;
-    if (this.recieveCurrenyTypePrimary === 'DAU') {
-      standardAmount = new BigNumber(this.convertUsdToDau(standardAmount));
-      fastAmount = new BigNumber(this.convertUsdToDau(fastAmount));
-    } else if (this.recieveCurrenyTypePrimary === 'USD') {
-      transferFees = new BigNumber(this.convertDauToUsd(fastAmount));
+  checkingAmountValidity(amount: any) {
+    if (!isNaN(amount) || isFinite(amount) || amount > 0) {
+      const bigAmount = new BigNumber(amount);
+      if (
+        bigAmount.isNaN() ||
+        !bigAmount.isFinite() ||
+        bigAmount.isNegative() ||
+        bigAmount.isZero()
+      ) {
+        this.isAmountValid = false;
+      } else {
+        this.isAmountValid = true;
+      }
     }
-    if (this.amountAfterDeduction) {
+  }
+
+  calculatingAmountToRecieve() {
+    this.checkingAmountValidity(new BigNumber(this.amountBeforeDeduction));
+    if (this.isAmountValid) {
+      this.amountAfterDeduction = new BigNumber(this.amountBeforeDeduction);
+      let standardAmount: BigNumber = new BigNumber(3.76);
+      let fastAmount: BigNumber = new BigNumber(10.3);
+      let transferFees: BigNumber = new BigNumber(0.005);
+      let totalFees: BigNumber;
+      if (this.recieveCurrenyTypePrimary === 'DAU') {
+        standardAmount = new BigNumber(this.convertUsdToDau(standardAmount));
+        fastAmount = new BigNumber(this.convertUsdToDau(fastAmount));
+      } else if (this.recieveCurrenyTypePrimary === 'USD') {
+        transferFees = new BigNumber(this.convertDauToUsd(fastAmount));
+      }
       totalFees = transferFees.add(
         this.feeType === 'standard' ? standardAmount : fastAmount
       );
-      console.log(totalFees);
       this.amountAfterDeduction = new BigNumber(
         this.amountAfterDeduction
       ).minus(totalFees);
     } else {
-      this.amountAfterDeduction = new BigNumber(0);
+      this.toastr.error(
+        'Token should be a valid number and cannot be negative or zero',
+        'Major Error',
+        {
+          timeOut: 1000,
+        }
+      );
     }
   }
 
   convertingCurrency(amount: BigNumber, type: string) {
-    if (
-      new BigNumber(amount).isNaN() ||
-      !new BigNumber(amount).isFinite() ||
-      new BigNumber(amount).isNegative()
-    ) {
-      this.toastr.error('Token can not be negative or zero', 'Major Error', {
-        timeOut: 3000,
-      });
-      return;
+    if (type === this.sendCurrencyTypePrimary) {
+      return amount;
+    } else if (type === 'DAU') {
+      return this.convertUsdToDau(amount).toFixed(2);
     } else {
-      if (type === this.sendCurrencyTypePrimary) {
-        return amount;
-      } else if (type === 'DAU') {
-        return this.convertUsdToDau(amount);
-      } else {
-        return this.convertDauToUsd(amount);
-      }
+      return this.convertDauToUsd(amount).toFixed(18);
     }
   }
 
   validatingTokens() {
     if (!this.amountBeforeDeduction) {
       this.toastr.error('Please enter some amount', 'Major Error', {
-        timeOut: 3000,
+        timeOut: 1000,
       });
     } else if (new BigNumber(this.amountBeforeDeduction).lessThanOrEqualTo(0)) {
       this.toastr.error('Token can not be negative or zero', 'Major Error', {
-        timeOut: 3000,
+        timeOut: 1000,
       });
     } else if (
       (this.sendCurrencyTypePrimary === 'DAU' &&
@@ -155,28 +168,28 @@ export class TokenScreenComponent implements OnInit {
         'Amount should be less than current balance',
         'Major Error',
         {
-          timeOut: 3000,
+          timeOut: 1000,
         }
       );
     } else {
       if (this.sendCurrencyTypePrimary === 'DAU') {
-        this.balanceInDAU = new BigNumber(this.balanceInDAU).minus(
+        this.balanceInDAU = this.balanceInDAU.minus(
           new BigNumber(this.amountBeforeDeduction)
         );
-        this.balanceInUSD =
-          this.convertDauToUsd(this.balanceInDAU) === undefined
-            ? new BigNumber(0)
-            : new BigNumber(this.convertDauToUsd(this.balanceInDAU));
+        this.balanceInUSD = this.balanceInDAU.isZero()
+          ? new BigNumber(0)
+          : this.convertDauToUsd(this.balanceInDAU);
       } else if (this.sendCurrencyTypePrimary === 'USD') {
-        this.balanceInUSD = new BigNumber(this.balanceInUSD).minus(
+        this.balanceInUSD = this.balanceInUSD.minus(
           new BigNumber(this.amountBeforeDeduction)
         );
-        this.balanceInDAU =
-          this.convertUsdToDau(this.balanceInUSD) === undefined
-            ? new BigNumber(0)
-            : new BigNumber(this.convertUsdToDau(this.balanceInUSD));
+        this.balanceInDAU = this.balanceInUSD.isZero()
+          ? new BigNumber(0)
+          : this.convertUsdToDau(this.amountBeforeDeduction);
       }
-      this.toastr.success('Tokens send successfully!', 'Success');
+      this.toastr.success('Tokens send successfully!', 'Success', {
+        timeOut: 1000,
+      });
       this.amountBeforeDeduction = new BigNumber(0);
       this.amountAfterDeduction = new BigNumber(0);
     }
