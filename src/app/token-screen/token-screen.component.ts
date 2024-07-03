@@ -93,7 +93,7 @@ export class TokenScreenComponent implements OnInit {
   }
 
   checkingAmountValidity(amount: any) {
-    if (!isNaN(amount) || isFinite(amount) || amount > 0) {
+    if (!isNaN(amount) && isFinite(amount) && amount > 0 && amount) {
       const bigAmount = new BigNumber(amount);
       if (
         bigAmount.isNaN() ||
@@ -105,11 +105,13 @@ export class TokenScreenComponent implements OnInit {
       } else {
         this.isAmountValid = true;
       }
+    } else {
+      this.isAmountValid = false;
     }
   }
 
   calculatingAmountToRecieve() {
-    this.checkingAmountValidity(new BigNumber(this.amountBeforeDeduction));
+    this.checkingAmountValidity(this.amountBeforeDeduction);
     if (this.isAmountValid) {
       this.amountAfterDeduction = new BigNumber(this.amountBeforeDeduction);
       let standardAmount: BigNumber = new BigNumber(3.76);
@@ -131,18 +133,23 @@ export class TokenScreenComponent implements OnInit {
     } else {
       this.showError(
         'Token should be a valid number and cannot be negative or zero',
-        'Major Error'
+        'Error'
       );
     }
   }
 
   convertingCurrency(amount: BigNumber, type: string) {
-    if (type === this.sendCurrencyTypePrimary) {
-      return amount;
-    } else if (type === 'DAU') {
-      return this.convertUsdToDau(amount).toFixed(18);
+    this.checkingAmountValidity(this.amountBeforeDeduction);
+    if (this.isAmountValid) {
+      if (type === this.sendCurrencyTypePrimary) {
+        return amount;
+      } else if (type === 'DAU') {
+        return this.convertUsdToDau(amount).toFixed(18);
+      } else {
+        return this.convertDauToUsd(amount).toFixed(2);
+      }
     } else {
-      return this.convertDauToUsd(amount).toFixed(2);
+      return '';
     }
   }
 
@@ -158,21 +165,18 @@ export class TokenScreenComponent implements OnInit {
 
   validatingTokens() {
     if (!this.amountBeforeDeduction) {
-      this.showError('Please enter some amount', 'Major Error');
+      this.showError('Please enter some amount', 'Error');
     } else if (new BigNumber(this.amountBeforeDeduction).lessThanOrEqualTo(0)) {
-      this.showError('Token can not be negative or zero', 'Major Error');
+      this.showError('Token can not be negative or zero', 'Error');
     } else if (
       (this.sendCurrencyTypePrimary === 'DAU' &&
         this.amountBeforeDeduction > this.balanceInDAU) ||
       (this.sendCurrencyTypePrimary === 'USD' &&
         this.amountBeforeDeduction > this.balanceInUSD)
     ) {
-      this.showError(
-        'Amount should be less than current balance',
-        'Major Error'
-      );
+      this.showError('Amount should be less than current balance', 'Error');
     } else if (this.amountAfterDeduction.lessThanOrEqualTo(0)) {
-      this.showError('Insufficient funds after deducting fees', 'Major Error');
+      this.showError('Insufficient funds after deducting fees', 'Error');
     } else {
       if (this.sendCurrencyTypePrimary === 'DAU') {
         this.balanceInDAU = this.balanceInDAU.minus(
