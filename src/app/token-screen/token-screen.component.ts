@@ -14,25 +14,23 @@ const USD_TO_DAU_RATE = new BigNumber('1').dividedBy(DAU_TO_USD_RATE);
 export class TokenScreenComponent implements OnInit {
   isNetworkComponentOpened: boolean = false;
   isNetworkFeeComponentOpened: boolean = false;
-
   feeType: string = 'standard';
-
   amountBeforeDeduction: any = null;
   amountAfterDeduction: BigNumber = new BigNumber(0);
   sendCurrencyTypePrimary: string = 'DAU';
   sendCurrencyTypeSecondary: string = 'USD';
   recieveCurrenyTypePrimary: string = 'DAU';
   recieveCurrenyTypeSecondary: string = 'USD';
-
   balanceInDAU: BigNumber = new BigNumber('7');
   balanceInUSD!: BigNumber;
-
   isAmountValid: boolean = false;
 
   constructor(private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    this.balanceInUSD = new BigNumber(this.convertDauToUsd(this.balanceInDAU));
+    this.balanceInUSD = new BigNumber(
+      this.convertDauToUsd(this.balanceInDAU.valueOf())
+    );
   }
 
   /**
@@ -45,12 +43,10 @@ export class TokenScreenComponent implements OnInit {
   convertUsdToDau(
     usdAmount: string | number | BigNumber,
     usdToDauRate: BigNumber = USD_TO_DAU_RATE
-  ): BigNumber {
-    if (usdAmount) {
-      const usd = new BigNumber(usdAmount);
-      const dauAmount = usd.times(usdToDauRate); // .toFixed(18); Return the result with up to 18 decimal places
-      return dauAmount;
-    } else return new BigNumber(0);
+  ): string {
+    const usd = new BigNumber(usdAmount);
+    const dauAmount = usd.times(usdToDauRate);
+    return dauAmount.toFixed(18, 1);
   }
 
   /**
@@ -63,12 +59,10 @@ export class TokenScreenComponent implements OnInit {
   convertDauToUsd(
     dauAmount: string | number | BigNumber,
     dauToUsdRate: BigNumber = DAU_TO_USD_RATE
-  ): BigNumber {
-    if (dauAmount) {
-      const dau = new BigNumber(dauAmount);
-      const usdAmount = dau.times(dauToUsdRate); // .toFixed(2); Return the result with up to 2 decimal places
-      return usdAmount;
-    } else return new BigNumber(0);
+  ): string {
+    const dau = new BigNumber(dauAmount);
+    const usdAmount = dau.times(dauToUsdRate);
+    return usdAmount.toFixed(2, 1);
   }
 
   toggleNetworkPopup(event: any) {
@@ -83,7 +77,7 @@ export class TokenScreenComponent implements OnInit {
   gettingSendCurrencyType(event: string) {
     this.sendCurrencyTypeSecondary = this.sendCurrencyTypePrimary;
     this.sendCurrencyTypePrimary = event;
-    this.amountBeforeDeduction = new BigNumber(0);
+    this.amountBeforeDeduction = null;
     this.amountAfterDeduction = new BigNumber(0);
   }
 
@@ -124,17 +118,24 @@ export class TokenScreenComponent implements OnInit {
       } else if (this.recieveCurrenyTypePrimary === 'USD') {
         transferFees = new BigNumber(this.convertDauToUsd(fastAmount));
       }
-      totalFees = transferFees.add(
-        this.feeType === 'standard' ? standardAmount : fastAmount
+      totalFees = new BigNumber(
+        transferFees.add(
+          this.feeType === 'standard' ? standardAmount : fastAmount
+        )
       );
-      this.amountAfterDeduction = new BigNumber(
-        this.amountAfterDeduction
-      ).minus(totalFees);
+      this.amountAfterDeduction = this.amountAfterDeduction.minus(totalFees);
     } else {
-      this.showError(
-        'Token should be a valid number and cannot be negative or zero',
-        'Error'
-      );
+      if (this.amountAfterDeduction.lessThanOrEqualTo(0)) {
+        this.showError(
+          'After deduction the Recipient Amount is Less than zero. Please enter a greater amount.',
+          'Error'
+        );
+      } else {
+        this.showError(
+          'Token should be a valid number and cannot be negative or zero',
+          'Error'
+        );
+      }
     }
   }
 
@@ -144,9 +145,9 @@ export class TokenScreenComponent implements OnInit {
       if (type === this.sendCurrencyTypePrimary) {
         return amount;
       } else if (type === 'DAU') {
-        return this.convertUsdToDau(amount).toFixed(18);
+        return this.convertUsdToDau(amount);
       } else {
-        return this.convertDauToUsd(amount).toFixed(2);
+        return this.convertDauToUsd(amount);
       }
     } else {
       return '';
@@ -175,26 +176,28 @@ export class TokenScreenComponent implements OnInit {
         this.amountBeforeDeduction > this.balanceInUSD)
     ) {
       this.showError('Amount should be less than current balance', 'Error');
-    } else if (this.amountAfterDeduction.lessThanOrEqualTo(0)) {
-      this.showError('Insufficient funds after deducting fees', 'Error');
     } else {
       if (this.sendCurrencyTypePrimary === 'DAU') {
         this.balanceInDAU = this.balanceInDAU.minus(
           new BigNumber(this.amountBeforeDeduction)
         );
-        this.balanceInUSD = this.balanceInDAU.isZero()
-          ? new BigNumber(0)
-          : this.convertDauToUsd(this.balanceInDAU);
+        this.balanceInUSD = new BigNumber(
+          this.balanceInDAU.isZero()
+            ? new BigNumber(0)
+            : this.convertDauToUsd(this.balanceInDAU)
+        );
       } else if (this.sendCurrencyTypePrimary === 'USD') {
         this.balanceInUSD = this.balanceInUSD.minus(
           new BigNumber(this.amountBeforeDeduction)
         );
-        this.balanceInDAU = this.balanceInUSD.isZero()
-          ? new BigNumber(0)
-          : this.convertUsdToDau(this.amountBeforeDeduction);
+        this.balanceInDAU = new BigNumber(
+          this.balanceInUSD.isZero()
+            ? new BigNumber(0)
+            : this.convertUsdToDau(this.amountBeforeDeduction)
+        );
       }
       this.showSuccess('Tokens send successfully!');
-      this.amountBeforeDeduction = new BigNumber(0);
+      this.amountBeforeDeduction = null;
       this.amountAfterDeduction = new BigNumber(0);
     }
   }
