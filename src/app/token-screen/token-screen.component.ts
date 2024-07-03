@@ -129,12 +129,9 @@ export class TokenScreenComponent implements OnInit {
         this.amountAfterDeduction
       ).minus(totalFees);
     } else {
-      this.toastr.error(
+      this.showError(
         'Token should be a valid number and cannot be negative or zero',
-        'Major Error',
-        {
-          timeOut: 1000,
-        }
+        'Major Error'
       );
     }
   }
@@ -143,34 +140,39 @@ export class TokenScreenComponent implements OnInit {
     if (type === this.sendCurrencyTypePrimary) {
       return amount;
     } else if (type === 'DAU') {
-      return this.convertUsdToDau(amount).toFixed(2);
+      return this.convertUsdToDau(amount).toFixed(18);
     } else {
-      return this.convertDauToUsd(amount).toFixed(18);
+      return this.convertDauToUsd(amount).toFixed(2);
     }
+  }
+
+  showError(errorMessage: string, errorType: string) {
+    this.toastr.error(errorMessage, errorType, {
+      timeOut: 1000,
+    });
+  }
+
+  showSuccess(successMessage: string) {
+    this.toastr.success(successMessage, 'Success', { timeOut: 1000 });
   }
 
   validatingTokens() {
     if (!this.amountBeforeDeduction) {
-      this.toastr.error('Please enter some amount', 'Major Error', {
-        timeOut: 1000,
-      });
+      this.showError('Please enter some amount', 'Major Error');
     } else if (new BigNumber(this.amountBeforeDeduction).lessThanOrEqualTo(0)) {
-      this.toastr.error('Token can not be negative or zero', 'Major Error', {
-        timeOut: 1000,
-      });
+      this.showError('Token can not be negative or zero', 'Major Error');
     } else if (
       (this.sendCurrencyTypePrimary === 'DAU' &&
         this.amountBeforeDeduction > this.balanceInDAU) ||
       (this.sendCurrencyTypePrimary === 'USD' &&
         this.amountBeforeDeduction > this.balanceInUSD)
     ) {
-      this.toastr.error(
+      this.showError(
         'Amount should be less than current balance',
-        'Major Error',
-        {
-          timeOut: 1000,
-        }
+        'Major Error'
       );
+    } else if (this.amountAfterDeduction.lessThanOrEqualTo(0)) {
+      this.showError('Insufficient funds after deducting fees', 'Major Error');
     } else {
       if (this.sendCurrencyTypePrimary === 'DAU') {
         this.balanceInDAU = this.balanceInDAU.minus(
@@ -187,9 +189,7 @@ export class TokenScreenComponent implements OnInit {
           ? new BigNumber(0)
           : this.convertUsdToDau(this.amountBeforeDeduction);
       }
-      this.toastr.success('Tokens send successfully!', 'Success', {
-        timeOut: 1000,
-      });
+      this.showSuccess('Tokens send successfully!');
       this.amountBeforeDeduction = new BigNumber(0);
       this.amountAfterDeduction = new BigNumber(0);
     }

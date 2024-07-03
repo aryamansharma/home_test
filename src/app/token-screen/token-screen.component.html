@@ -43,8 +43,8 @@
                         {{sendCurrencyTypeSecondary}}</p>
                 </div>
                 <div class="right-ctn d-flex justify-content-between align-items-center">
-                    <p class="max-text my-0 " [ngClass]="{'show-max-icon': (sendCurrencyTypePrimary==='DAU' && (amountBeforeDeduction! >= this.balanceInDAU!)
-                        || (sendCurrencyTypePrimary==='USD' && (amountBeforeDeduction! >= this.balanceInUSD!)))}">
+                    <p class="max-text my-0 " [ngClass]="{'show-max-icon': (sendCurrencyTypePrimary==='DAU' && (amountBeforeDeduction >= this.balanceInDAU)
+                        || (sendCurrencyTypePrimary==='USD' && (amountBeforeDeduction >= this.balanceInUSD)))}">
                         Max</p>
                     <app-dropdowncomponent
                         (sendingDropDownVal)="gettingSendCurrencyType($event)"></app-dropdowncomponent>
