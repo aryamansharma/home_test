@@ -113,10 +113,16 @@ export class TokenScreenComponent implements OnInit {
       let transferFees: BigNumber = new BigNumber(0.005);
       let totalFees: BigNumber;
       if (this.recieveCurrenyTypePrimary === 'DAU') {
-        standardAmount = new BigNumber(this.convertUsdToDau(standardAmount));
-        fastAmount = new BigNumber(this.convertUsdToDau(fastAmount));
+        standardAmount = new BigNumber(
+          new BigNumber(this.convertUsdToDau(standardAmount)).toFixed(2, 1)
+        );
+        fastAmount = new BigNumber(
+          new BigNumber(this.convertUsdToDau(fastAmount)).toFixed(2, 1)
+        );
       } else if (this.recieveCurrenyTypePrimary === 'USD') {
-        transferFees = new BigNumber(this.convertDauToUsd(fastAmount));
+        transferFees = new BigNumber(
+          new BigNumber(this.convertDauToUsd(fastAmount)).toFixed(18, 1)
+        );
       }
       totalFees = new BigNumber(
         transferFees.add(
