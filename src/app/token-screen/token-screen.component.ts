@@ -65,9 +65,16 @@ export class TokenScreenComponent implements OnInit {
     return usdAmount.toFixed(2, 1);
   }
 
-  toggleNetworkPopup(event: any) {
+  toggleNetworkPopup() {
     this.isNetworkComponentOpened = !this.isNetworkComponentOpened;
-    this.feeType = event;
+  }
+
+  changingFeetype(event: any) {
+    if (this.feeType !== event) {
+      this.feeType = event;
+      this.amountBeforeDeduction = null;
+      this.toggleNetworkPopup();
+    }
   }
 
   toggleNetworkFeePopup() {
@@ -113,35 +120,23 @@ export class TokenScreenComponent implements OnInit {
       let transferFees: BigNumber = new BigNumber(0.005);
       let totalFees: BigNumber;
       if (this.recieveCurrenyTypePrimary === 'DAU') {
-        standardAmount = new BigNumber(
-          new BigNumber(this.convertUsdToDau(standardAmount)).toFixed(2, 1)
-        );
-        fastAmount = new BigNumber(
-          new BigNumber(this.convertUsdToDau(fastAmount)).toFixed(2, 1)
-        );
+        standardAmount = new BigNumber(this.convertUsdToDau(standardAmount));
+
+        fastAmount = new BigNumber(this.convertUsdToDau(fastAmount));
       } else if (this.recieveCurrenyTypePrimary === 'USD') {
-        transferFees = new BigNumber(
-          new BigNumber(this.convertDauToUsd(fastAmount)).toFixed(18, 1)
-        );
+        transferFees = new BigNumber(this.convertDauToUsd(fastAmount));
       }
-      totalFees = new BigNumber(
-        transferFees.add(
-          this.feeType === 'standard' ? standardAmount : fastAmount
-        )
-      );
+      if (this.feeType === 'standard') {
+        totalFees = new BigNumber(transferFees.add(standardAmount));
+      } else {
+        totalFees = new BigNumber(transferFees.add(fastAmount));
+      }
       this.amountAfterDeduction = this.amountAfterDeduction.minus(totalFees);
     } else {
-      if (this.amountAfterDeduction.lessThanOrEqualTo(0)) {
-        this.showError(
-          'After deduction the Recipient Amount is Less than zero. Please enter a greater amount.',
-          'Error'
-        );
-      } else {
-        this.showError(
-          'Token should be a valid number and cannot be negative or zero',
-          'Error'
-        );
-      }
+      this.showError(
+        'Token should be a valid number and cannot be negative or zero',
+        'Error'
+      );
     }
   }
 
@@ -182,6 +177,11 @@ export class TokenScreenComponent implements OnInit {
         this.amountBeforeDeduction > this.balanceInUSD)
     ) {
       this.showError('Amount should be less than current balance', 'Error');
+    } else if (this.amountAfterDeduction.lessThanOrEqualTo(0)) {
+      this.showError(
+        'After deduction the Recipient Amount is Less than zero. Please enter a greater amount.',
+        'Error'
+      );
     } else {
       if (this.sendCurrencyTypePrimary === 'DAU') {
         this.balanceInDAU = this.balanceInDAU.minus(

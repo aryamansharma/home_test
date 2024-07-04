@@ -73,8 +73,8 @@
     </div>
     <app-network-fee-popup [isNetworkFeePopupOpened]="isNetworkFeeComponentOpened"
         (closingPopup)="toggleNetworkFeePopup()"></app-network-fee-popup>
-    <app-networkpopup [isNetworkPopupOpened]="isNetworkComponentOpened"
-        (closingPopup)="toggleNetworkPopup($event)"></app-networkpopup>
+    <app-networkpopup [isNetworkPopupOpened]="isNetworkComponentOpened" (closingPopup)="toggleNetworkPopup()"
+        (changingFeeType)="changingFeetype($event)"></app-networkpopup>
     <div class="footer-menu">
         <div class="network-fees-ctn d-flex justify-content-between align-items-center">
             <p class="network-fees-text my-0">Network fees <span (click)="toggleNetworkFeePopup()"><svg
@@ -84,7 +84,7 @@
                             stroke="#85888E" stroke-linecap="round" stroke-linejoin="round" />
                     </svg></span>
             </p>
-            <div (click)="toggleNetworkPopup($event)" class="right-ctn d-flex align-items-center">
+            <div (click)="toggleNetworkPopup()" class="right-ctn d-flex align-items-center">
                 <span class="clock-icon">{{feeType==='standard'?'⏱':'⚡️'}}</span><span
                     class="standard-text">{{feeType==='standard' ? 'Standard' : 'Fast'}}</span><span
                     class="d-flex align-items-center"><svg xmlns="http://www.w3.org/2000/svg" width="2" height="3"
