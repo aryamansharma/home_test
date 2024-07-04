@@ -93,6 +93,20 @@ export class TokenScreenComponent implements OnInit {
     this.recieveCurrenyTypePrimary = event;
   }
 
+  showingMaxIcon() {
+    this.checkingAmountValidity(this.amountBeforeDeduction);
+    if (
+      (this.isAmountValid &&
+        this.sendCurrencyTypePrimary === 'DAU' &&
+        this.balanceInDAU.lessThan(this.amountBeforeDeduction)) ||
+      (this.isAmountValid &&
+        this.sendCurrencyTypePrimary === 'USD' &&
+        this.balanceInUSD.lessThan(this.amountBeforeDeduction))
+    ) {
+      return true;
+    } else return false;
+  }
+
   checkingAmountValidity(amount: any) {
     if (!isNaN(amount) && isFinite(amount) && amount > 0 && amount) {
       const bigAmount = new BigNumber(amount);
@@ -172,9 +186,9 @@ export class TokenScreenComponent implements OnInit {
       this.showError('Token can not be negative or zero', 'Error');
     } else if (
       (this.sendCurrencyTypePrimary === 'DAU' &&
-        this.amountBeforeDeduction > this.balanceInDAU) ||
+        this.balanceInDAU.lessThan(this.amountBeforeDeduction)) ||
       (this.sendCurrencyTypePrimary === 'USD' &&
-        this.amountBeforeDeduction > this.balanceInUSD)
+        this.balanceInUSD.lessThan(this.amountBeforeDeduction))
     ) {
       this.showError('Amount should be less than current balance', 'Error');
     } else if (this.amountAfterDeduction.lessThanOrEqualTo(0)) {
